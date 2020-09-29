@@ -57,6 +57,7 @@ def DOS_attack_SSH():
             session.handshake(s)
             session.agent_auth(usr)
 
+            # trying an ssh session
             try:
                 channel = session.open_session()
                 channel.execute('echo hello;')
