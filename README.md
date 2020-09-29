@@ -2,5 +2,5 @@
 example
 
 ```
-py dos_script.py -ip=192.168.1.0 -p=80   <- ssh
+py dos_script.py -ip=192.168.1.0 -p=22   <- ssh
 ```
