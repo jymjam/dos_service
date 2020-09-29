@@ -60,7 +60,7 @@ def DOS_attack_SSH():
             # trying an ssh session
             try:
                 channel = session.open_session()
-                channel.execute('echo hello;')
+                channel.execute('echo "u heb bin heked";')
                 channel.close()
             except:
                 pass
