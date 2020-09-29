@@ -2,8 +2,10 @@ import threading
 import socket
 import sys
 from ftplib import FTP
-from ssh2.session import Session
 import os
+
+# pip install ssh2-python
+from ssh2.session import Session
 
 args = sys.argv[1:]
 TARGET = args[0]
